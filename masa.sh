@@ -55,3 +55,26 @@ geth --datadir data init ./network/testnet/genesis.json
 PRIVATE_CONFIG=ignore
 echo 'export PRIVATE_CONFIG='${PRIVATE_CONFIG} >> $HOME/.bash_profile
 source $HOME/.bash_profile
+
+sudo tee /etc/systemd/system/masad.service > /dev/null <<EOF
+[Unit]
+Description=MASA
+After=network.target
+[Service]
+Type=simple
+User=$USER
+ExecStart=/usr/bin/geth --identity ${NODE_NAME} --datadir $HOME/masa-node-v1.0/data --bootnodes enode://ac6b1096ca56b9f6d004b779ae3728bf83f8e22453404cc3cef16a3d9b96608bc67c4b30db88e0a5a6c6390213f7acbe1153ff6d23ce57380104288ae19373ef@172.16.239.11:21000  --emitcheckpoints --istanbul.blockperiod 1 --mine --minerthreads 1 --syncmode full --verbosity 5 --networkid 190250 --rpc --rpccorsdomain "*" --rpcvhosts "*" --rpcaddr 127.0.0.1 --rpcport 8545 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,istanbul --port 30300
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=4096
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Start service
+sudo systemctl daemon-reload
+sudo systemctl enable masad
+sudo systemctl restart masad
+
+
+
