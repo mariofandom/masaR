@@ -70,6 +70,8 @@ LimitNOFILE=4096
 [Install]
 WantedBy=multi-user.target
 EOF
+mkdir masa_config
+
 
 # Start service
 sudo systemctl daemon-reload
