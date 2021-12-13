@@ -71,7 +71,7 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 mkdir masa_config
-
+chmod +x $HOME/masa_config
 
 # Start service
 sudo systemctl daemon-reload
